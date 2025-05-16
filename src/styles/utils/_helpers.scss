@@ -1,0 +1,15 @@
+
+@use './responsive' as *;
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  padding: 0 30px;
+
+  @include resp-before("xl") {
+    padding: 0;
+    max-width: 1130px;
+  }
+}
+

@@ -1,0 +1,53 @@
+@use "sass:map";
+
+$breakpoints: (
+	'xxs': 320px,
+	'xs': 360px,
+	'sm': 414px,
+	'pre-md': 540px,
+	'md': 768px,
+	'lg': 992px,
+	'xl': 1200px,
+	'xxl': 1440px,
+	'xxxl': 1600px,
+);
+
+/// @author Hugo Giraudel
+/// @param {String} $breakpoint - Breakpoint name
+/// @require $breakpoints
+@mixin resp-to($breakpoint) {
+
+	// If the key exists in the map
+	@if map.has-key($breakpoints, $breakpoint) {
+
+		// Prints a media query based on the value
+		@media (max-width: map.get($breakpoints, $breakpoint) - 1) {
+			@content;
+		}
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "[respond-to] Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+		+ "Available breakpoints are: #{map-keys($breakpoints)}.";
+	}
+}
+
+// @media (min-width: XXXpx) { ... }
+@mixin resp-before($breakpoint) {
+
+	// If the key exists in the map
+	@if map.has-key($breakpoints, $breakpoint) {
+
+		// Prints a media query based on the value
+		@media (min-width: map.get($breakpoints, $breakpoint)) {
+			@content;
+		}
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "[respond before] Unfortunately, no value could be retrieved from `#{$breakpoint}`."
+		+ "Available breakpoints are: #{map-keys($breakpoints)}.";
+	}
+}
