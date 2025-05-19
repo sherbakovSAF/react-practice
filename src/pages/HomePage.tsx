@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <div className={styles["home-page"]}>
       <Header />
-      <main>
+      <main className="container">
         <OffenderList />
       </main>
     </div>

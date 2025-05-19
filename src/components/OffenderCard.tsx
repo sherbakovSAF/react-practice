@@ -24,7 +24,7 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
   return (
     <article className={styles.offender}>
       <div className={styles.offender_img}>
-        <img src={offender.avatar} alt="" />
+        <img src={offender.avatar} alt="Преступник" loading="lazy" />
       </div>
       <div className={styles.offender_info}>
         <p className={styles.offender_info_name}>
