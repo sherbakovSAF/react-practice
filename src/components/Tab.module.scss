@@ -1,0 +1,29 @@
+.tab {
+	width: fit-content;
+	border-radius: 10px;
+	background: #252525;
+	padding: 3px;
+	display: flex;
+	align-items: center;
+	color: white;
+	
+	&_item {
+		padding: calc(.5rem - 3px) calc(1rem - 3px);
+		border-radius: inherit;
+		cursor: pointer;
+		&--active {
+			background-color: #252525;
+		}
+	}
+
+	&--secondary {
+		background: #525252;
+		border-radius: 4px;
+
+		&_item {
+			&--active {
+				background-color: #525252;
+			}
+		}
+	}
+}
