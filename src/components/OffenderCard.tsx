@@ -4,6 +4,7 @@ import Button from "./Button";
 import SearchLevel from "./SearchLevel";
 import styles from "./OffenderCard.module.scss";
 import CashIcon from "../assets/cash-icon.svg";
+import clsx from "clsx";
 
 interface OffenderCardProps {
   offender: Offender_I;
@@ -21,7 +22,12 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
   );
 
   return (
-    <article className={styles.offender}>
+    <article
+      className={clsx(
+        styles.offender,
+        offender.isBusted && styles["offender--busted"]
+      )}
+    >
       <div className={styles.offender_img}>
         <img src={offender.avatar} alt="Преступник" loading="lazy" />
       </div>
@@ -37,9 +43,12 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
         <img src={CashIcon} alt="Иконка денег" />
         <span> {getFormatFee}</span>
       </p>
-
       <hr />
-      <Button onClick={() => onBusted()}>Я поймал</Button>
+      {offender.isBusted ? (
+        <p className={styles.offender_busted}>Преступник пойман</p>
+      ) : (
+        <Button onClick={() => onBusted()}>Я поймал</Button>
+      )}
     </article>
   );
 };
