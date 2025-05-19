@@ -3,6 +3,12 @@
 
 @use './utils/index' as *;
 
-body{
-	font-family: "Roboto", sans-serif;
+
+html {
+	scroll-behavior: smooth;
+	
+	body {
+		font-family: "Roboto", sans-serif;
+	}
 }
+
