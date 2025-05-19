@@ -3,20 +3,4 @@
 
 .home-page {
 	background-color: #f9fafc;
-
-	&_list {
-		@include grid(1);
-
-		@include resp-before("pre-md"){
-			@include grid(2)
-		}
-
-		@include resp-before("md"){
-			@include grid(3)
-		}
-
-		@include resp-before("lg"){
-			@include grid(4)
-		}
-	}
 }
