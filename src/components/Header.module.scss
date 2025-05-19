@@ -1,0 +1,55 @@
+@use '../styles/utils/responsive' as *;
+
+.header {
+	background: #2f2f2f;
+	padding: 2rem;
+
+	&_logo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		color: white;
+		gap: .5rem;
+		font-weight: 500;
+		margin-bottom: 2rem;
+
+		@include resp-before('sm') {
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		&_title {
+			font-size: 30px;
+		}
+	}
+
+	&_control {
+		background: #252525;
+		padding: 1rem;
+		border-radius: .5rem;
+
+		search {
+			margin-bottom: 1rem;
+			@include resp-before('sm') {
+				width: 75%;
+			}
+		}
+
+		&_params {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
+			@include resp-before('md') {
+				flex-direction: row;
+				align-items: flex-end;
+			}
+
+			&_reset {
+				@include resp-before('md') {
+					margin-left: auto;
+				}
+			}
+		}
+	}
+}
