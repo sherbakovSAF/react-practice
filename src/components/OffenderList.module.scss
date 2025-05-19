@@ -1,0 +1,20 @@
+@use '../styles/utils/responsive' as *;
+@use '../styles/base/mixins' as *;
+
+.list {
+	padding-top: 2rem;
+		padding-bottom: 2rem;
+		@include grid(1);
+	
+		@include resp-before("pre-md") {
+			@include grid(2)
+		}
+	
+		@include resp-before("md") {
+			@include grid(3)
+		}
+	
+		@include resp-before("lg") {
+			@include grid(4)
+		}
+}
