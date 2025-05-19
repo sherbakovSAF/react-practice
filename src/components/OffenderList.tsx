@@ -1,79 +1,41 @@
 import OffenderCard from "../components/OffenderCard";
-import { clsx } from "clsx";
+import Loader from "./Loader";
 import styles from "./OffenderList.module.scss";
+import { useCallback, useEffect, useState } from "react";
+import { getAllOffenderService } from "../services/Offender.service";
+import type { Offender_I } from "../types/OffenderType";
 
 const OffenderList = () => {
+  const [offenderLoading, setOffenderLoading] = useState(true);
+  const [offenders, setOffenders] = useState<Offender_I[]>([]);
+
+  const getAllOffender = useCallback(async () => {
+    setOffenderLoading(true);
+    const offender = await getAllOffenderService();
+    setOffenders(offender);
+    setOffenderLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getAllOffender();
+  }, [getAllOffender]);
   return (
-    <ul className={clsx(styles["list"], "container")}>
-      <li>
-        <OffenderCard
-          offender={{
-            createdAt: "2025-05-16T12:18:47.348Z",
-            name: "Muriel Parker",
-            avatar:
-              "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/77.jpg",
-            age: 58,
-            city: "College Station",
-            fee: 72,
-            isBusted: false,
-            searchLvl: 5,
-            id: 1,
-          }}
-          onBusted={() => console.log("Нажали я поймал")}
-        />
-      </li>
-      <li>
-        <OffenderCard
-          offender={{
-            createdAt: "2025-05-16T12:18:47.348Z",
-            name: "Muriel Parker",
-            avatar:
-              "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/77.jpg",
-            age: 58,
-            city: "College Station",
-            fee: 72,
-            isBusted: false,
-            searchLvl: 5,
-            id: 1,
-          }}
-          onBusted={() => console.log("Нажали я поймал")}
-        />
-      </li>
-      <li>
-        <OffenderCard
-          offender={{
-            createdAt: "2025-05-16T12:18:47.348Z",
-            name: "Muriel Parker",
-            avatar:
-              "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/77.jpg",
-            age: 58,
-            city: "College Station",
-            fee: 72,
-            isBusted: false,
-            searchLvl: 5,
-            id: 1,
-          }}
-          onBusted={() => console.log("Нажали я поймал")}
-        />
-      </li>
-      <li>
-        <OffenderCard
-          offender={{
-            createdAt: "2025-05-16T12:18:47.348Z",
-            name: "Muriel Parker",
-            avatar:
-              "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/77.jpg",
-            age: 58,
-            city: "College Station",
-            fee: 72,
-            isBusted: false,
-            searchLvl: 5,
-            id: 1,
-          }}
-          onBusted={() => console.log("Нажали я поймал")}
-        />
-      </li>
-    </ul>
+    <>
+      {offenderLoading ? (
+        <Loader />
+      ) : (
+        <ul className={styles["list"]}>
+          {offenders.map((offender) => (
+            <li key={offender.id}>
+              <OffenderCard
+                offender={offender}
+                onBusted={() => console.log("Открываем")}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 };
 
