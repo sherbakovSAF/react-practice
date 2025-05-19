@@ -1,0 +1,28 @@
+.select {
+	border-radius: 10px;
+	color: white;
+	transition: 0.2s linear;
+	background: #252525;
+	padding: 0.5rem 1rem;
+	user-select: none;
+	font-weight: 500;
+	width: 100%;
+	border: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	cursor: pointer;
+
+	&:focus {
+		outline: #525252 2px solid;
+	}
+
+	&--secondary {
+		background: #525252;
+		border-radius: 4px;
+
+		&:focus {
+			outline-color: #9b9b9b;
+		}
+	}
+}
