@@ -20,7 +20,6 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
     [offender.fee]
   );
 
-  console.log(CashIcon);
   return (
     <article className={styles.offender}>
       <div className={styles.offender_img}>

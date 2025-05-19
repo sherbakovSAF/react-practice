@@ -6,7 +6,10 @@ type OffenderServer = Omit<Offender_I, "searchLvl"> & {
   searchLvl: string;
 };
 
-export const getAllOffenderService = async (page = 1, limit = 12) => {
+export const getAllOffenderService = async (
+  page = 1,
+  limit = 12
+): Promise<Offender_I[]> => {
   const url = new URL("https://68265c8f397e48c91315dac2.mockapi.io/api/wanted");
   url.searchParams.append("page", page.toString());
   url.searchParams.append("limit", limit.toString());
