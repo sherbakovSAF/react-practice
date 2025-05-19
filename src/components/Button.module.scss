@@ -2,10 +2,20 @@
 	border-radius: 10px;
 	color: white;
 	transition: .2s linear;
-	background: #000000;
+	background: #252525;
 	padding: .5rem 0.25rem;
+	user-select: none;
 
-	&:hover{
-		box-shadow: #4b4b4b 0 0px 0px 40px inset;
+	&:hover {
+		box-shadow: #525252 0 0px 0px 40px inset;
+	}
+
+	&--secondary {
+		background: #525252;
+		border-radius: 4px;
+
+		&:hover {
+			box-shadow: #9b9b9b 0 0px 0px 40px inset;
+		}
 	}
 }

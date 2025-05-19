@@ -1,19 +1,29 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import styles from "./Button.module.scss";
-type MarkBustedButtonProps = PropsWithChildren<
-  ButtonHTMLAttributes<HTMLButtonElement>
->;
+import clsx from "clsx";
+interface ButtonProps
+  extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>> {
+  view?: "primary" | "secondary";
+}
 
-const MarkBustedButton: React.FC<MarkBustedButtonProps> = ({
+const Button: React.FC<ButtonProps> = ({
   children,
+  className,
+  view = "primary",
   ...props
 }) => {
-  console.log(styles);
   return (
-    <button className={styles.btn} {...props}>
+    <button
+      {...props}
+      className={clsx(
+        className,
+        styles.btn,
+        view === "secondary" && styles["btn--secondary"]
+      )}
+    >
       {children}
     </button>
   );
 };
 
-export default MarkBustedButton;
+export default Button;
