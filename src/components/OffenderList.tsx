@@ -1,67 +1,103 @@
 import OffenderCard from "../components/OffenderCard";
 import Loader from "./Loader";
 import styles from "./OffenderList.module.scss";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getAllOffenderService } from "../services/Offender.service";
+import { useCallback, useEffect, useRef } from "react";
+import { offenderApi } from "../services/Offender.service";
+import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
+import { OffenderSlice } from "../store/reducers/offenderReducer";
 import type { Offender_I } from "../types/OffenderType";
 
 const OffenderList = () => {
-  const [offenderLoading, setOffenderLoading] = useState(false);
-  const [offenders, setOffenders] = useState<Offender_I[]>([]);
-  const hasMore = useRef(true);
-  const currentPage = useRef(1);
-
+  const dispatch = useAppDispatch();
+  const { offenders, status, currentPage, hasMore, search, lvl } =
+    useAppSelector((state) => state.offenderReducer);
+  const { addOffenders, setCurrentPage, setHasMore, replaceOffenders } =
+    OffenderSlice.actions;
+  const [fetchMore, { isLoading, error }] =
+    offenderApi.useLazyGetAllOffenderQuery();
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const fetchAllOffender = useCallback(async () => {
-    if (!hasMore.current) return;
-    setOffenderLoading(true);
-    const nextPage = currentPage.current;
-    currentPage.current += 1;
-    const newOffenders = await getAllOffenderService(nextPage);
-    if (newOffenders.length) {
-      setOffenders((prev) => prev.concat(newOffenders));
-    } else {
-      hasMore.current = false;
+  const fetchAllOffender = useCallback(async (): Promise<Offender_I[]> => {
+    if (!hasMore) return [];
+
+    const newOffenders = await fetchMore({
+      page: currentPage,
+      limit: 12,
+      isBusted: status ? status === "busted" : undefined,
+      name: search.length ? search : undefined,
+      searchLvl: lvl ?? undefined,
+    }).unwrap();
+
+    if (!newOffenders.length) {
+      setHasMore(false);
+      return [];
     }
 
-    setOffenderLoading(false);
-  }, []);
+    if (newOffenders.length) {
+      dispatch(setCurrentPage(currentPage + 1));
+      return newOffenders;
+    } else {
+      setHasMore(false);
+    }
+
+    return [];
+  }, [currentPage, status, fetchMore, hasMore, setHasMore]);
 
   const lastOffenderEl = useCallback(
     (node: HTMLLIElement | null) => {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) fetchAllOffender();
+        if (entries[0].isIntersecting)
+          fetchAllOffender().then((newOffenders) =>
+            dispatch(addOffenders(newOffenders))
+          );
       });
       if (node) observer.current.observe(node);
     },
     [fetchAllOffender]
   );
 
-  // TODO: Спросить про ref и StrictMode
   useEffect(() => {
-    fetchAllOffender();
-  }, [fetchAllOffender]);
+    fetchAllOffender().then((newOffenders) =>
+      dispatch(addOffenders(newOffenders))
+    );
+  }, []);
+
+  const debounce = useRef<number | null>(null);
+  useEffect(() => {
+    if (debounce.current) clearTimeout(debounce.current);
+    debounce.current = setTimeout(() => {
+      fetchAllOffender().then((newOffenders) =>
+        dispatch(replaceOffenders(newOffenders))
+      );
+    }, 4000);
+    return () => {
+      if (debounce.current) clearTimeout(debounce.current);
+    };
+  }, [status, search, lvl]);
+
+  useEffect(() => {
+    if (error) alert(error.data);
+  }, [error]);
   return (
     <div>
-      <ul className={styles["list"]}>
-        {offenders.map((offender, idx) => {
-          const isLast = idx === offenders.length - 1;
-          return (
-            <li key={offender.id} ref={isLast ? lastOffenderEl : null}>
-              <OffenderCard
-                offender={offender}
-                onBusted={() => console.log("Открываем")}
-              />
-            </li>
-          );
-        })}
-      </ul>
-      {offenderLoading && <Loader />}
-      {hasMore.current && (
-        <button onClick={() => fetchAllOffender()}>Ещё</button>
+      {offenders && (
+        <ul className={styles["list"]}>
+          {offenders.map((offender, idx) => {
+            const isLast = idx === offenders.length - 1;
+            return (
+              <li key={offender.id} ref={isLast ? lastOffenderEl : null}>
+                <OffenderCard
+                  offender={offender}
+                  onBusted={() => console.log("Открываем")}
+                />
+              </li>
+            );
+          })}
+        </ul>
       )}
+
+      {isLoading && <Loader />}
     </div>
   );
 };

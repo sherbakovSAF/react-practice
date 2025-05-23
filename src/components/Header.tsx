@@ -4,27 +4,62 @@ import Label from "./Label";
 import Select from "./Select";
 import Tab from "./Tab";
 import styles from "./Header.module.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
+import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
+import {
+  type OffenderStatus_E,
+  type WantedLevel_E,
+  OffenderSlice,
+  OffenderStatus,
+  WantedLevel,
+} from "../store/reducers/offenderReducer";
+import type { OptionItem_I } from "../types/SettingsTypes";
 
 const Header = () => {
   // TODO: Вернуться к тому, чтобы при смене level, не перерендеривался TAB => Statuses
-  const [lvl, setLvl] = useState<{ code: string; title: string } | null>(null);
-  const levels = [
-    { code: "1", title: "Низкий уровень угрозы" },
-    { code: "2", title: "Склонен к нарушению порядка" },
-    { code: "3", title: "Замечен в агрессивном поведении" },
-    { code: "4", title: "Потенциально опасен" },
-    { code: "5", title: "Угроза общественной безопасности" },
-    { code: "6", title: "Опасен для окружающих" },
-    { code: "7", title: "Особо опасен" },
-  ];
+  const { lvl, status, search } = useAppSelector(
+    (state) => state.offenderReducer
+  );
 
-  const [status, setStatus] = useState<string | null>(null);
-  const statuses = [
-    { code: "fining", title: "Разыскивает" },
-    { code: "busted", title: "Пойман" },
-  ];
+  const { setLvl, setSearch, setStatus, resetFilter } = OffenderSlice.actions;
+  const dispatch = useAppDispatch();
+
+  const levels = useMemo((): OptionItem_I<WantedLevel_E>[] => {
+    return [
+      { code: WantedLevel.ONE, title: "Низкий уровень угрозы" },
+      { code: WantedLevel.TWO, title: "Склонен к нарушению порядка" },
+      { code: WantedLevel.THREE, title: "Замечен в агрессивном поведении" },
+      { code: WantedLevel.FOUR, title: "Потенциально опасен" },
+      { code: WantedLevel.FIVE, title: "Угроза общественной безопасности" },
+      { code: WantedLevel.SIX, title: "Опасен для окружающих" },
+      { code: WantedLevel.SEVEN, title: "Особо опасен" },
+    ];
+  }, []);
+
+  const currentLvl = useMemo((): OptionItem_I<WantedLevel_E> | null => {
+    return levels.find(({ code }) => code === lvl) ?? null;
+  }, [lvl]);
+
+  const statuses = useMemo((): OptionItem_I<OffenderStatus_E>[] => {
+    return [
+      { code: OffenderStatus.BUSTED, title: "Пойман" },
+      { code: OffenderStatus.FINING, title: "Разыскивает" },
+    ];
+  }, []);
+  const currentStatus = useMemo((): OptionItem_I<OffenderStatus_E> | null => {
+    return statuses.find(({ code }) => code === status) ?? null;
+  }, [status]);
+
+  const handleUpdateLvl = useCallback((updatedLvl: OptionItem_I | null) => {
+    // TODO: Подумать над "as"
+    dispatch(setLvl(updatedLvl ? (updatedLvl.code as WantedLevel_E) : null));
+  }, []);
+
+  const handleStatusLvl = useCallback((updatedStatus: OptionItem_I) => {
+    // TODO: Подумать над "as"
+    dispatch(setStatus(updatedStatus.code as OffenderStatus_E));
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -38,6 +73,8 @@ const Header = () => {
             role="search"
             view="secondary"
             placeholder="Введите имя преступника"
+            value={search}
+            onChange={(newValue) => dispatch(setSearch(newValue.target.value))}
           />
         </search>
         <div className={styles.header_control_params}>
@@ -46,8 +83,8 @@ const Header = () => {
               id="lvl"
               view="secondary"
               options={levels}
-              selected={lvl}
-              onOptionSelect={(e) => setLvl(e)}
+              selected={currentLvl}
+              onOptionSelect={handleUpdateLvl}
             />
           </Label>
           <Label label="Состояние" id="status">
@@ -55,14 +92,15 @@ const Header = () => {
               id="status"
               view="secondary"
               tabs={statuses}
-              selectedTab={status}
-              onSelectTab={(status) => status && setStatus(status.code)}
+              selectedTab={currentStatus}
+              onSelectTab={handleStatusLvl}
             />
           </Label>
 
           <Button
             className={styles.header_control_params_reset}
             view="secondary"
+            onClick={() => dispatch(resetFilter())}
           >
             Сброс
           </Button>
