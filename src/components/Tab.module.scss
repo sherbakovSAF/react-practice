@@ -11,6 +11,7 @@
 		padding: calc(.5rem - 3px) calc(1rem - 3px);
 		border-radius: inherit;
 		cursor: pointer;
+		user-select: none;
 		&--active {
 			background-color: #252525;
 		}
