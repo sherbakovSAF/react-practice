@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 import OffenderCard from "../components/OffenderCard";
-import { useOffenders } from "../useOffenders";
+import { useOffenders } from "../hooks/useOffenders";
 import Loader from "./Loader";
 import styles from "./OffenderList.module.scss";
 

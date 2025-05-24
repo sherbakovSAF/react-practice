@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
-import { useAppDispatch, useAppSelector } from "./store/hooks/redux";
-import { offenderApi } from "./services/Offender.service";
-import type { Offender_I } from "./types/OffenderType";
-import { OffenderSlice } from "./store/slices/offenderSlice";
-import { offenderModalSlice } from "./store/slices/offenderModalSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
+import { offenderApi } from "../services/Offender.service";
+import type { Offender_I } from "../types/OffenderType";
+import { OffenderSlice } from "../store/slices/offenderSlice";
+import { offenderModalSlice } from "../store/slices/offenderModalSlice";
 
 export const useOffenders = () => {
   const dispatch = useAppDispatch();

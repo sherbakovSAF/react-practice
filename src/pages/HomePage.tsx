@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import OffenderList from "../components/OffenderList";
 import OffenderModal from "../components/OffenderModal";
 
-import { useOffenders } from "../useOffenders";
+import { useOffenders } from "../hooks/useOffenders";
 
 import styles from "./HomePage.module.scss";
 
