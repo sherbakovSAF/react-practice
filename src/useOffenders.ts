@@ -10,8 +10,13 @@ export const useOffenders = () => {
   const { offenders, status, currentPage, hasMore, search, lvl } =
     useAppSelector((state) => state.offenderSlice);
   const { openOffenderModal } = offenderModalSlice.actions;
-  const { addOffenders, setCurrentPage, setHasMore, replaceOffenders } =
-    OffenderSlice.actions;
+  const {
+    addOffenders,
+    setCurrentPage,
+    setHasMore,
+    replaceOffenders,
+    setOffenderForApprove,
+  } = OffenderSlice.actions;
   const [fetchMore, { isLoading, error }] =
     offenderApi.useLazyGetAllOffenderQuery();
   const TIME_DEBOUNCE_MS = 1000;
@@ -50,7 +55,8 @@ export const useOffenders = () => {
     );
   };
 
-  const callApproveOffenderModal = () => {
+  const callApproveOffenderModal = (offender: Offender_I) => {
+    dispatch(setOffenderForApprove(offender));
     dispatch(openOffenderModal());
   };
 

@@ -34,7 +34,7 @@ const OffenderList = () => {
               <li key={offender.id} ref={isLast ? lastOffenderEl : null}>
                 <OffenderCard
                   offender={offender}
-                  onBusted={() => callApproveOffenderModal()}
+                  onBusted={() => callApproveOffenderModal(offender)}
                 />
               </li>
             );
