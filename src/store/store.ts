@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import offenderReducer from "./reducers/offenderReducer";
+import offenderReducer from "./slices/offenderSlice";
 import { offenderApi } from "../services/Offender.service";
 
 const rootReducer = combineReducers({
