@@ -3,8 +3,9 @@ import type { SelectHTMLAttributes } from "react";
 import styles from "./Select.module.scss";
 import clsx from "clsx";
 import type { OptionItem_I } from "../types/SettingsTypes";
+import type { TypeViewComponent } from "../types/UiTypes";
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  view?: "primary" | "secondary";
+  view?: TypeViewComponent;
   options: OptionItem_I[];
   onOptionSelect: (option: OptionItem_I | null) => void;
   selected?: OptionItem_I | null;

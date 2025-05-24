@@ -1,8 +1,9 @@
 import type { InputHTMLAttributes } from "react";
 import styles from "./Input.module.scss";
 import clsx from "clsx";
+import type { TypeViewComponent } from "../types/UiTypes";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  view?: "primary" | "secondary";
+  view?: TypeViewComponent;
 }
 
 const Input: React.FC<InputProps> = ({ view = "primary", ...props }) => {
