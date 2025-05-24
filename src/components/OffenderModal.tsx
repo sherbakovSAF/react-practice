@@ -1,9 +1,24 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styles from "./OffenderModal.module.scss";
+import stylesCard from "./OffenderCard.module.scss";
 import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
 import { offenderModalSlice } from "../store/slices/offenderModalSlice";
+import type { Offender_I } from "../types/OffenderType";
+import SearchLevel from "./SearchLevel";
+import Button from "./Button";
+import clsx from "clsx";
 
-const OffenderModal = () => {
+interface offenderModalProps {
+  offender: Offender_I;
+  onApprove: () => void;
+  onClose: () => void;
+}
+
+const OffenderModal: React.FC<offenderModalProps> = ({
+  offender,
+  onClose,
+  onApprove,
+}) => {
   const { closeOffenderModal } = offenderModalSlice.actions;
   const dialogRef = useRef<HTMLDialogElement>(null);
   const { isOpen } = useAppSelector((state) => state.offenderModalSlice);
@@ -17,6 +32,15 @@ const OffenderModal = () => {
     }
   };
 
+  const getFormatFee = useMemo(
+    () =>
+      new Intl.NumberFormat("ru-Ru", {
+        style: "currency",
+        currency: "USD",
+      }).format(offender.fee * 1.5),
+    [offender.fee]
+  );
+
   useEffect(() => {
     if (!dialogRef.current) return;
 
@@ -26,6 +50,7 @@ const OffenderModal = () => {
     } else {
       dialogRef.current.close();
       document.body.style.overflow = "";
+      onClose();
     }
   }, [isOpen]);
 
@@ -35,8 +60,26 @@ const OffenderModal = () => {
       ref={dialogRef}
       onClick={handleClickBackdropModal}
     >
-      <p>Это диалог</p>
-      <button onClick={() => dispatch(closeOffenderModal())}>Закрыть</button>
+      <div className={clsx(stylesCard.offender, styles.modal_info)}>
+        <div className={stylesCard.offender_img}>
+          <img src={offender.avatar} alt="Преступник" loading="lazy" />
+        </div>
+        <div className={stylesCard.offender_info}>
+          <p className={stylesCard.offender_info_name}>
+            <strong>{offender.name}</strong>
+          </p>
+          <p>Возраст {offender.age}</p>
+          <p className={stylesCard.offender_info_city}>{offender.city}</p>
+        </div>
+        <SearchLevel lvl={offender.searchLvl} />
+      </div>
+      <div className={styles.modal_alert}>
+        <p>
+          Вы уверены, что поймали преступника <b>{offender.name}</b>. Если это
+          не так, то Вы заплатите штраф <b>{getFormatFee}</b>
+        </p>
+        <Button className={styles.modal_alert_approve}>Я уверен</Button>
+      </div>
     </dialog>
   );
 };

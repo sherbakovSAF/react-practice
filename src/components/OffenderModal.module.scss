@@ -2,7 +2,9 @@
 @use '../styles/base/mixins' as *;
 
 .modal {
-	width: 400px; // или auto / 100% / max-content — по твоей задаче
+	display: flex;
+	gap: 2rem;
+	width: 50vw;
 	padding: 2rem;
 	border: none;
 	border-radius: 10px;
@@ -13,8 +15,26 @@
 	background: white;
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 	z-index: 1000;
+	height: 100%;
+	max-height: 360px;
+	overflow: auto;
 
 	&::backdrop {
 		background: rgba(0, 0, 0, 0.6);
+	}
+
+	&_info {
+		padding: 0;
+		flex-shrink: 0;
+	}
+
+	&_alert {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		justify-content: space-between;
+		height: 100%;
+		text-align: center;
+
 	}
 }

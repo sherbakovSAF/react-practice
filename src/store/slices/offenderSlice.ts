@@ -10,6 +10,7 @@ interface InitialState_I {
   lvl: WantedLevel_E | null;
   currentPage: number;
   hasMore: boolean;
+  offenderForApprove: Offender_I | null;
 }
 
 const initialState: InitialState_I = {
@@ -19,6 +20,7 @@ const initialState: InitialState_I = {
   lvl: null,
   currentPage: 1,
   hasMore: true,
+  offenderForApprove: null,
 };
 
 export const OffenderSlice = createSlice({
@@ -49,6 +51,10 @@ export const OffenderSlice = createSlice({
     },
     replaceOffenders(state, action: PayloadAction<Offender_I[]>) {
       state.offenders = action.payload;
+    },
+    setOffenderForApprove(state, action: PayloadAction<Offender_I | null>) {
+      console.log(action.payload);
+      state.offenderForApprove = action.payload;
     },
   },
 });
