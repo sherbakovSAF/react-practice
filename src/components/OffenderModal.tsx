@@ -78,7 +78,12 @@ const OffenderModal: React.FC<offenderModalProps> = ({
           Вы уверены, что поймали преступника <b>{offender.name}</b>. Если это
           не так, то Вы заплатите штраф <b>{getFormatFee}</b>
         </p>
-        <Button className={styles.modal_alert_approve}>Я уверен</Button>
+        <Button
+          className={styles.modal_alert_approve}
+          onClick={() => onApprove()}
+        >
+          Я уверен
+        </Button>
       </div>
     </dialog>
   );

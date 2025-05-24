@@ -56,6 +56,12 @@ export const OffenderSlice = createSlice({
       console.log(action.payload);
       state.offenderForApprove = action.payload;
     },
+    updateOffender(state, action: PayloadAction<Offender_I>) {
+      const idxOffender = state.offenders.findIndex(
+        ({ id }) => id === action.payload.id
+      );
+      state.offenders[idxOffender] = action.payload;
+    },
   },
 });
 

@@ -7,18 +7,27 @@ import { offenderModalSlice } from "./store/slices/offenderModalSlice";
 
 export const useOffenders = () => {
   const dispatch = useAppDispatch();
-  const { offenders, status, currentPage, hasMore, search, lvl } =
-    useAppSelector((state) => state.offenderSlice);
-  const { openOffenderModal } = offenderModalSlice.actions;
+  const {
+    offenders,
+    status,
+    currentPage,
+    hasMore,
+    search,
+    lvl,
+    offenderForApprove,
+  } = useAppSelector((state) => state.offenderSlice);
+  const { openOffenderModal, closeOffenderModal } = offenderModalSlice.actions;
   const {
     addOffenders,
     setCurrentPage,
     setHasMore,
     replaceOffenders,
     setOffenderForApprove,
+    updateOffender,
   } = OffenderSlice.actions;
   const [fetchMore, { isLoading, error }] =
     offenderApi.useLazyGetAllOffenderQuery();
+  const [updateOffenderService] = offenderApi.useUpdateOffenderMutation();
   const TIME_DEBOUNCE_MS = 1000;
   const debounce = useRef<number | null>(null);
 
@@ -59,6 +68,20 @@ export const useOffenders = () => {
     dispatch(setOffenderForApprove(offender));
     dispatch(openOffenderModal());
   };
+  const closeApproveOffenderModal = () => {
+    dispatch(closeOffenderModal());
+    dispatch(setOffenderForApprove(null));
+  };
+
+  const bustedOffender = async (offender: Offender_I) => {
+    const { data } = await updateOffenderService({
+      ...offender,
+      isBusted: true,
+    });
+    if (data) dispatch(updateOffender(data));
+
+    closeApproveOffenderModal();
+  };
 
   useEffect(() => {
     if (debounce.current) clearTimeout(debounce.current);
@@ -83,5 +106,8 @@ export const useOffenders = () => {
     hasMore,
     isLoading,
     callApproveOffenderModal,
+    bustedOffender,
+    offenderForApprove,
+    closeApproveOffenderModal,
   };
 };
