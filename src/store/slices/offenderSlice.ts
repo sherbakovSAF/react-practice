@@ -1,25 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Offender_I } from "../../types/OffenderType";
-
-export const OffenderStatus = {
-  FINING: "fining",
-  BUSTED: "busted",
-} as const;
-
-export type OffenderStatus_E =
-  (typeof OffenderStatus)[keyof typeof OffenderStatus];
-
-export const WantedLevel = {
-  ONE: "1",
-  TWO: "2",
-  THREE: "3",
-  FOUR: "4",
-  FIVE: "5",
-  SIX: "6",
-  SEVEN: "7",
-} as const;
-
-export type WantedLevel_E = (typeof WantedLevel)[keyof typeof WantedLevel];
+import type { WantedLevel_E } from "../../types/WantedLevelTypes";
+import type { OffenderStatus_E } from "../../types/OffenderStatusTypes";
 
 interface InitialState_I {
   offenders: Offender_I[];
@@ -47,7 +29,7 @@ export const OffenderSlice = createSlice({
       state.lvl = action.payload;
       state.currentPage = initialState.currentPage;
     },
-    setStatus: (state, action: PayloadAction<OffenderStatus_E>) => {
+    setStatus: (state, action: PayloadAction<OffenderStatus_E | null>) => {
       state.status = action.payload;
       state.currentPage = initialState.currentPage;
     },
