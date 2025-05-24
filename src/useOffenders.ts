@@ -31,7 +31,7 @@ export const useOffenders = () => {
   const TIME_DEBOUNCE_MS = 1000;
   const debounce = useRef<number | null>(null);
 
-  const fetchAllOffender = useCallback(async (): Promise<Offender_I[]> => {
+  const fetchOffender = useCallback(async (): Promise<Offender_I[]> => {
     if (!hasMore) return [];
 
     const newOffenders = await fetchMore({
@@ -42,24 +42,17 @@ export const useOffenders = () => {
       searchLvl: lvl ?? undefined,
     }).unwrap();
 
-    if (!newOffenders.length) {
-      dispatch(setHasMore(false));
-      return [];
-    }
-
     if (newOffenders.length) {
       dispatch(setCurrentPage(currentPage + 1));
-
       return newOffenders;
-    } else {
-      dispatch(setHasMore(false));
     }
 
+    dispatch(setHasMore(false));
     return [];
   }, [currentPage, status, fetchMore, hasMore, setHasMore, lvl, search]);
 
   const fetchMoreOffenders = () => {
-    fetchAllOffender().then((newOffenders) =>
+    fetchOffender().then((newOffenders) =>
       dispatch(addOffenders(newOffenders))
     );
   };
@@ -87,7 +80,7 @@ export const useOffenders = () => {
     if (debounce.current) clearTimeout(debounce.current);
     debounce.current = setTimeout(() => {
       dispatch(setHasMore(true));
-      fetchAllOffender().then((newOffenders) =>
+      fetchOffender().then((newOffenders) =>
         dispatch(replaceOffenders(newOffenders))
       );
     }, TIME_DEBOUNCE_MS);
