@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import offenderReducer from "./slices/offenderSlice";
+import offenderModalSlice from "./slices/offenderModalSlice";
 import { offenderApi } from "../services/Offender.service";
 
 const rootReducer = combineReducers({
   offenderReducer,
+  offenderModalSlice,
   [offenderApi.reducerPath]: offenderApi.reducer,
 });
 
