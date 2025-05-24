@@ -5,7 +5,13 @@ import Loader from "./Loader";
 import styles from "./OffenderList.module.scss";
 
 const OffenderList = () => {
-  const { fetchMoreOffenders, isLoading, offenders, hasMore } = useOffenders();
+  const {
+    fetchMoreOffenders,
+    isLoading,
+    offenders,
+    hasMore,
+    callApproveOffenderModal,
+  } = useOffenders();
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastOffenderEl = useCallback((node: HTMLLIElement | null) => {
@@ -28,7 +34,7 @@ const OffenderList = () => {
               <li key={offender.id} ref={isLast ? lastOffenderEl : null}>
                 <OffenderCard
                   offender={offender}
-                  onBusted={() => console.log("Открываем")}
+                  onBusted={() => callApproveOffenderModal()}
                 />
               </li>
             );

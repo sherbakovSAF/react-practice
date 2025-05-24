@@ -3,11 +3,13 @@ import { useAppDispatch, useAppSelector } from "./store/hooks/redux";
 import { offenderApi } from "./services/Offender.service";
 import type { Offender_I } from "./types/OffenderType";
 import { OffenderSlice } from "./store/slices/offenderSlice";
+import { offenderModalSlice } from "./store/slices/offenderModalSlice";
 
 export const useOffenders = () => {
   const dispatch = useAppDispatch();
   const { offenders, status, currentPage, hasMore, search, lvl } =
     useAppSelector((state) => state.offenderReducer);
+  const { openOffenderModal } = offenderModalSlice.actions;
   const { addOffenders, setCurrentPage, setHasMore, replaceOffenders } =
     OffenderSlice.actions;
   const [fetchMore, { isLoading, error }] =
@@ -48,6 +50,10 @@ export const useOffenders = () => {
     );
   };
 
+  const callApproveOffenderModal = () => {
+    dispatch(openOffenderModal());
+  };
+
   useEffect(() => {
     if (debounce.current) clearTimeout(debounce.current);
     debounce.current = setTimeout(() => {
@@ -65,5 +71,11 @@ export const useOffenders = () => {
     if (error) alert(error.data);
   }, [error]);
 
-  return { fetchMoreOffenders, offenders, hasMore, isLoading };
+  return {
+    fetchMoreOffenders,
+    offenders,
+    hasMore,
+    isLoading,
+    callApproveOffenderModal,
+  };
 };
