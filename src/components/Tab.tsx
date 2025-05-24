@@ -16,7 +16,7 @@ const Tab: React.FC<TabProps> = React.memo(
   ({ view = "primary", tabs, selectedTab = null, onSelectTab, ...props }) => {
     const handleTab = (tab: OptionItem_I) => {
       if (selectedTab?.code === tab.code) return onSelectTab(null);
-      return tab;
+      return onSelectTab(tab);
     };
     return (
       <div
