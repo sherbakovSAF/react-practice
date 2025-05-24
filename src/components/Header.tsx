@@ -7,14 +7,13 @@ import styles from "./Header.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
-import {
-  type OffenderStatus_E,
-  type WantedLevel_E,
-  OffenderSlice,
-  OffenderStatus,
-  WantedLevel,
-} from "../store/reducers/offenderReducer";
+import { OffenderSlice } from "../store/slices/offenderSlice";
 import type { OptionItem_I } from "../types/SettingsTypes";
+import { WantedLevel, type WantedLevel_E } from "../types/WantedLevelTypes";
+import {
+  OffenderStatus,
+  type OffenderStatus_E,
+} from "../types/OffenderStatusTypes";
 
 const Header = () => {
   // TODO: Вернуться к тому, чтобы при смене level, не перерендеривался TAB => Statuses
@@ -56,9 +55,11 @@ const Header = () => {
     dispatch(setLvl(updatedLvl ? (updatedLvl.code as WantedLevel_E) : null));
   }, []);
 
-  const handleStatusLvl = useCallback((updatedStatus: OptionItem_I) => {
+  const handleStatusLvl = useCallback((updatedStatus: OptionItem_I | null) => {
     // TODO: Подумать над "as"
-    dispatch(setStatus(updatedStatus.code as OffenderStatus_E));
+    dispatch(
+      setStatus(updatedStatus ? (updatedStatus.code as OffenderStatus_E) : null)
+    );
   }, []);
 
   return (

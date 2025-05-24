@@ -1,7 +1,7 @@
 import { Provider } from "react-redux";
 import HomePage from "./pages/HomePage";
 import styled from "styled-components";
-import { setupStore } from "./store";
+import { setupStore } from "./store/store";
 
 const Wrapper = styled.div`
   min-height: 100vh;
