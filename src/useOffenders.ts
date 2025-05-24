@@ -8,7 +8,7 @@ import { offenderModalSlice } from "./store/slices/offenderModalSlice";
 export const useOffenders = () => {
   const dispatch = useAppDispatch();
   const { offenders, status, currentPage, hasMore, search, lvl } =
-    useAppSelector((state) => state.offenderReducer);
+    useAppSelector((state) => state.offenderSlice);
   const { openOffenderModal } = offenderModalSlice.actions;
   const { addOffenders, setCurrentPage, setHasMore, replaceOffenders } =
     OffenderSlice.actions;

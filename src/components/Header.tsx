@@ -18,7 +18,7 @@ import {
 const Header = () => {
   // TODO: Вернуться к тому, чтобы при смене level, не перерендеривался TAB => Statuses
   const { lvl, status, search } = useAppSelector(
-    (state) => state.offenderReducer
+    (state) => state.offenderSlice
   );
 
   const { setLvl, setSearch, setStatus, resetFilter } = OffenderSlice.actions;
