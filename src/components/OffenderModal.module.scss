@@ -1,0 +1,20 @@
+@use '../styles/utils/responsive' as *;
+@use '../styles/base/mixins' as *;
+
+.modal {
+	width: 400px; // или auto / 100% / max-content — по твоей задаче
+	padding: 2rem;
+	border: none;
+	border-radius: 10px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+	z-index: 1000;
+
+	&::backdrop {
+		background: rgba(0, 0, 0, 0.6);
+	}
+}
