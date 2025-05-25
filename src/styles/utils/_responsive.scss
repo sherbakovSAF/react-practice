@@ -1,15 +1,15 @@
 @use "sass:map";
 
 $breakpoints: (
-	'xxs': 320px,
-	'xs': 360px,
-	'sm': 414px,
+	// 'xxs': 320px,
+	// 'xs': 360px,
+	'sm': 575.98px,
 	'pre-md': 540px,
-	'md': 768px,
-	'lg': 992px,
-	'xl': 1200px,
-	'xxl': 1440px,
-	'xxxl': 1600px,
+	'md': 767.98px,
+	'lg': 991.98px,
+	'xl': 1199.98px,
+	'xxl': 1399.98px,
+	// 'xxxl': 1600px,
 );
 
 /// @author Hugo Giraudel
