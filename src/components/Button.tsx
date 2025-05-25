@@ -10,12 +10,14 @@ interface ButtonProps
 const Button: React.FC<ButtonProps> = ({
   children,
   className,
+  type = "button",
   view = "primary",
   ...props
 }) => {
   return (
     <button
       {...props}
+      type={type}
       className={clsx(
         className,
         styles.btn,
