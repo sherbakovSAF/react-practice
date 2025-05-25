@@ -97,7 +97,10 @@ export const useOffenders = () => {
   }, [search]);
 
   useEffect(() => {
-    if (error) alert(error.data);
+    if (error && "data" in error) {
+      const message = (error.data as { message?: string })?.message;
+      alert(message ?? "Неизвестная ошибка");
+    }
   }, [error]);
 
   return {
