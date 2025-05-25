@@ -53,7 +53,6 @@ export const OffenderSlice = createSlice({
       state.offenders = action.payload;
     },
     setOffenderForApprove(state, action: PayloadAction<Offender_I | null>) {
-      console.log(action.payload);
       state.offenderForApprove = action.payload;
     },
     updateOffender(state, action: PayloadAction<Offender_I>) {
