@@ -1,3 +1,5 @@
+@use '../styles/base/mixins' as *;
+
 .offender {
 	background: white;
 	padding: 1rem;
@@ -6,11 +8,20 @@
 	flex-direction: column;
 	gap: .5rem;
 	height: 100%;
+	cursor: pointer;
+	transition: 0.2s ease-in;
 
-
-	&--busted{
+	&--busted {
 		opacity: 0.5;
 		outline: #104b10 1px solid;
+	}
+
+	@include hover {
+		background: rgb(241, 241, 241);
+		-webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+		-moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+		box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+
 	}
 
 
@@ -22,8 +33,6 @@
 	}
 
 	&_img {
-
-
 		border-radius: 3px;
 		overflow: hidden;
 
@@ -71,7 +80,7 @@
 		margin: 0.5rem 0;
 	}
 
-	&_busted{
+	&_busted {
 		text-align: center;
 		font-weight: 500;
 		padding: .5rem .25rem;

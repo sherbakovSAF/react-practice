@@ -18,6 +18,13 @@ const Tab: React.FC<TabProps> = React.memo(
       if (selectedTab?.code === tab.code) return onSelectTab(null);
       return onSelectTab(tab);
     };
+
+    const handleKeyDown = (
+      e: React.KeyboardEvent<HTMLSpanElement>,
+      tab: OptionItem_I
+    ) => {
+      if (e.code === "Enter") handleTab(tab);
+    };
     return (
       <div
         className={clsx(
@@ -25,6 +32,7 @@ const Tab: React.FC<TabProps> = React.memo(
           view === "secondary" && styles["tab--secondary"]
         )}
         {...props}
+        role="tablist"
       >
         {tabs.map((tab, tabIdx) => (
           <span
@@ -33,7 +41,10 @@ const Tab: React.FC<TabProps> = React.memo(
               tab.code === selectedTab?.code && styles["tab_item--active"]
             )}
             onClick={() => handleTab(tab)}
+            onKeyDown={(e) => handleKeyDown(e, tab)}
             key={tabIdx}
+            tabIndex={0}
+            role="tab"
           >
             {tab.title}
           </span>

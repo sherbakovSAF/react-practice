@@ -59,6 +59,7 @@ const OffenderModal: React.FC<offenderModalProps> = ({
       className={styles.modal}
       ref={dialogRef}
       onClick={handleClickBackdropModal}
+      onClose={() => dispatch(closeOffenderModal())}
     >
       <div className={clsx(stylesCard.offender, styles.modal_info)}>
         <div className={stylesCard.offender_img}>

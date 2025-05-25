@@ -27,6 +27,7 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
         styles.offender,
         offender.isBusted && styles["offender--busted"]
       )}
+      tabIndex={0}
     >
       <div className={styles.offender_img}>
         <img src={offender.avatar} alt="Преступник" loading="lazy" />
