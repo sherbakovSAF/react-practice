@@ -77,6 +77,13 @@ export const useOffenders = () => {
   };
 
   useEffect(() => {
+    dispatch(setHasMore(true));
+    fetchOffender().then((newOffenders) =>
+      dispatch(replaceOffenders(newOffenders))
+    );
+  }, [status, lvl]);
+
+  useEffect(() => {
     if (debounce.current) clearTimeout(debounce.current);
     debounce.current = setTimeout(() => {
       dispatch(setHasMore(true));
@@ -87,7 +94,7 @@ export const useOffenders = () => {
     return () => {
       if (debounce.current) clearTimeout(debounce.current);
     };
-  }, [status, search, lvl]);
+  }, [search]);
 
   useEffect(() => {
     if (error) alert(error.data);
