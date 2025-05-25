@@ -41,7 +41,7 @@ const OffenderCard: React.FC<OffenderCardProps> = ({ offender, onBusted }) => {
       </div>
       <SearchLevel lvl={offender.searchLvl} />
       <p className={styles.offender_fee}>
-        <img src={CashIcon} alt="Иконка денег" />
+        <img src={CashIcon} alt="Иконка денег" loading="lazy" />
         <span> {getFormatFee}</span>
       </p>
       <hr />
