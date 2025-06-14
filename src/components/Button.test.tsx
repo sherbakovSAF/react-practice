@@ -7,6 +7,10 @@ describe("Button", () => {
     render(<Button>Кнопка</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "button");
   });
+  test("renders default button snapshot", () => {
+    const { asFragment } = render(<Button>Кнопка</Button>);
+    expect(asFragment()).toMatchSnapshot();
+  });
   test("accepts custom type", () => {
     render(<Button type="submit">Отправить</Button>);
     expect(screen.getByRole("button")).toHaveAttribute("type", "submit");
@@ -19,9 +23,19 @@ describe("Button", () => {
     render(<Button view="secondary">Кнопка</Button>);
     expect(screen.getByRole("button").className).toMatch(/btn--secondary/);
   });
+  test("renders secondary button snapshot", () => {
+    const { asFragment } = render(<Button view="secondary">Кнопка</Button>);
+    expect(asFragment()).toMatchSnapshot();
+  });
   test("merges passed className", () => {
     render(<Button className="custom-class">Кнопка</Button>);
     expect(screen.getByRole("button").className).toMatch(/custom-class/);
+  });
+  test("renders with custom class snapshot", () => {
+    const { asFragment } = render(
+      <Button className="custom-class">Кнопка</Button>
+    );
+    expect(asFragment()).toMatchSnapshot();
   });
   test("calls onClick handler", () => {
     const handleClick = vi.fn();
