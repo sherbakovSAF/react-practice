@@ -7,6 +7,7 @@ interface LabelProps
   label: string;
   id: string;
   view?: TypeViewComponent;
+  error?: string;
 }
 
 const Label: React.FC<LabelProps> = ({
@@ -14,6 +15,7 @@ const Label: React.FC<LabelProps> = ({
   id,
   label,
   view = "primary",
+  error,
   ...props
 }) => {
   const getClassByView = useMemo(() => {
@@ -30,7 +32,10 @@ const Label: React.FC<LabelProps> = ({
       <dt>
         <label htmlFor={id}>{label}</label>
       </dt>
-      <dd>{children}</dd>
+      <dd>
+        {children}
+        {error && <small>{error}</small>}
+      </dd>
     </dl>
   );
 };

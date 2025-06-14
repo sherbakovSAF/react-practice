@@ -9,6 +9,10 @@
 	user-select: none;
 
 
+	&:disabled{
+		pointer-events: none;
+		opacity: 0.5;
+	}
 
 	@include hover {
 		box-shadow: #525252 0 0px 0px 40px inset;
