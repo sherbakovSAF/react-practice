@@ -21,6 +21,12 @@
 		&_title {
 			font-size: 30px;
 		}
+
+		&_right{
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+		}
 	}
 
 	&_control {

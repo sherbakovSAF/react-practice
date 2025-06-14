@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import offenderSlice from "./slices/offenderSlice";
 import offenderModalSlice from "./slices/offenderModalSlice";
+import authModalSlice from "./slices/authModalSlice";
 import { offenderApi } from "../services/Offender.service";
 
 const rootReducer = combineReducers({
   offenderSlice,
   offenderModalSlice,
+  authModalSlice,
   [offenderApi.reducerPath]: offenderApi.reducer,
 });
 
