@@ -1,27 +1,42 @@
-import React, { useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "./AuthModal.module.scss";
 import Input from "./Input";
-// import stylesCard from "./OffenderCard.module.scss";
 import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
-// import { offenderModalSlice } from "../store/slices/offenderModalSlice";
-// import type { Offender_I } from "../types/OffenderType";
-// import SearchLevel from "./SearchLevel";
 import Button from "./Button";
 import Label from "./Label";
 import { authModalSlice } from "../store/slices/authModalSlice";
-// import clsx from "clsx";
+import { AuthSlice } from "../store/slices/authSlice";
+
+const CORRECT_MAIL = "test@mail.ru";
+const CORRECT_PASS = "Ab123123";
 
 interface AuthModalProps {
-  // offender: Offender_I;
-  // onApprove: () => void;
   onClose: () => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const { closeAuthModal } = authModalSlice.actions;
+  const { setAuthUser } = AuthSlice.actions;
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isOpen = useAppSelector((state) => state.authModalSlice.isOpen);
+  const isAuthUser = useAppSelector((state) => state.authSlice.isAuthUser);
   const dispatch = useAppDispatch();
+  const [errorMail, setErrorMail] = useState("");
+  const [errorPass, setErrorPass] = useState("");
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
+
+  const isDisabledSubmit = useMemo(() => {
+    if (!mail.length || !pass.length) return true;
+    if (errorMail || errorPass) return true;
+    return false;
+  }, [mail, pass, errorMail, errorPass]);
 
   const handleClickBackdropModal = (
     e: React.MouseEvent<HTMLDialogElement, MouseEvent>
@@ -31,14 +46,45 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     }
   };
 
-  // const getFormatFee = useMemo(
-  //   () =>
-  //     new Intl.NumberFormat("ru-Ru", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(offender.fee * 1.5),
-  //   [offender.fee]
-  // );
+  const isValidMail = useCallback((mail: string) => {
+    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      mail
+    );
+  }, []);
+
+  const isValidPassword = useCallback((password: string) => {
+    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
+  }, []);
+
+  const handleChangeEmail = useCallback(
+    (newMail: string) => {
+      setMail(newMail);
+      if (!isValidMail(newMail)) setErrorMail("Почта невалидна");
+      else setErrorMail("");
+    },
+    [isValidMail]
+  );
+
+  const handleChangePass = useCallback(
+    (newPass: string) => {
+      setPass(newPass);
+      setErrorPass(
+        isValidPassword(newPass) ? "" : "Введите более подходящий пароль"
+      );
+    },
+    [isValidPassword]
+  );
+
+  const handleSubmit = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      if (mail === CORRECT_MAIL && pass === CORRECT_PASS) {
+        dispatch(setAuthUser(true));
+        return;
+      }
+    },
+    [mail, pass, setAuthUser, dispatch]
+  );
 
   useEffect(() => {
     if (!dialogRef.current) return;
@@ -46,7 +92,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     if (isOpen) {
       dialogRef.current.showModal();
       document.body.style.overflow = "hidden";
-      console.log("inOpen");
     } else {
       dialogRef.current.close();
       document.body.style.overflow = "";
@@ -61,53 +106,62 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
       onClick={handleClickBackdropModal}
       onClose={() => dispatch(closeAuthModal())}
     >
-      <form className={styles.form}>
-        <div className={styles.form_info}>
-          <p>
-            Почта для входа: <b>test@mail.ru</b>
-          </p>
-          <p>
-            Пароль для входа: <b>123123</b>
-          </p>
-        </div>
-        <div className={styles.form_control}>
-          <Label id="login" label="Ваш логин" view="secondary">
-            <Input id="login" view={"ghost"} />
-          </Label>
-          <Label id="pass" label="Ваш пароль" view="secondary">
-            <Input id="pass" view={"ghost"} />
-          </Label>
-
-          <Button type="submit" className={styles.form_control_submit}>
-            Войти
+      {isAuthUser ? (
+        <div className={styles.isAuth}>
+          <p className={styles.isAuth_title}>Вы авторизованы</p>
+          <Button type="button" onClick={() => dispatch(setAuthUser(false))}>
+            Выйти
           </Button>
         </div>
-      </form>
-      {/* <div className={clsx(stylesCard.offender, styles.modal_info)}>
-        <div className={stylesCard.offender_img}>
-          <img src={offender.avatar} alt="Преступник" loading="lazy" />
-        </div>
-        <div className={stylesCard.offender_info}>
-          <p className={stylesCard.offender_info_name}>
-            <strong>{offender.name}</strong>
-          </p>
-          <p>Возраст {offender.age}</p>
-          <p className={stylesCard.offender_info_city}>{offender.city}</p>
-        </div>
-        <SearchLevel lvl={offender.searchLvl} />
-      </div>
-      <div className={styles.modal_alert}>
-        <p>
-          Вы уверены, что поймали преступника <b>{offender.name}</b>. Если это
-          не так, то Вы заплатите штраф <b>{getFormatFee}</b>
-        </p>
-        <Button
-          className={styles.modal_alert_approve}
-          onClick={() => onApprove()}
-        >
-          Я уверен
-        </Button>
-      </div> */}
+      ) : (
+        <form className={styles.form}>
+          <div className={styles.form_info}>
+            <p>
+              Почта для входа: <b>{CORRECT_MAIL}</b>
+            </p>
+            <p>
+              Пароль для входа: <b>{CORRECT_PASS}</b>
+            </p>
+          </div>
+          <div className={styles.form_control}>
+            <Label
+              id="login"
+              label="Ваш логин"
+              view="secondary"
+              error={errorMail}
+            >
+              <Input
+                id="login"
+                view={"ghost"}
+                value={mail}
+                onChange={(e) => handleChangeEmail(e.target.value)}
+              />
+            </Label>
+            <Label
+              id="pass"
+              label="Ваш пароль"
+              view="secondary"
+              error={errorPass}
+            >
+              <Input
+                id="pass"
+                view={"ghost"}
+                value={pass}
+                onChange={(e) => handleChangePass(e.target.value)}
+              />
+            </Label>
+
+            <Button
+              type="submit"
+              className={styles.form_control_submit}
+              disabled={isDisabledSubmit}
+              onClick={(e) => e && handleSubmit(e)}
+            >
+              Войти
+            </Button>
+          </div>
+        </form>
+      )}
     </dialog>
   );
 };
