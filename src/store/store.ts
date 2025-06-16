@@ -13,11 +13,12 @@ const rootReducer = combineReducers({
   [offenderApi.reducerPath]: offenderApi.reducer,
 });
 
-export const setupStore = () => {
+export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(offenderApi.middleware),
+    preloadedState,
   });
 };
 

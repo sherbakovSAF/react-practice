@@ -130,6 +130,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               error={errorMail}
             >
               <Input
+                data-testid="email"
                 id="login"
                 view={"ghost"}
                 value={mail}
@@ -143,6 +144,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               error={errorPass}
             >
               <Input
+                data-testid="password"
                 id="pass"
                 view={"ghost"}
                 value={pass}
