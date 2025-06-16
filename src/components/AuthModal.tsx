@@ -12,6 +12,7 @@ import Button from "./Button";
 import Label from "./Label";
 import { authModalSlice } from "../store/slices/authModalSlice";
 import { AuthSlice } from "../store/slices/authSlice";
+import { validateEmail, validatePassword } from "../lib/validate.lib";
 
 const CORRECT_MAIL = "test@mail.ru";
 const CORRECT_PASS = "Ab123123";
@@ -47,13 +48,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   };
 
   const isValidMail = useCallback((mail: string) => {
-    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      mail
-    );
+    return validateEmail(mail);
   }, []);
 
   const isValidPassword = useCallback((password: string) => {
-    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
+    return validatePassword(password);
   }, []);
 
   const handleChangeEmail = useCallback(
