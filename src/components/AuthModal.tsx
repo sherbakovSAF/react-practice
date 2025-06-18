@@ -128,6 +128,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               label="Ваш логин"
               view="secondary"
               error={errorMail}
+              data-testid="email-label"
             >
               <Input
                 data-testid="email"
@@ -142,6 +143,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
               label="Ваш пароль"
               view="secondary"
               error={errorPass}
+              data-testid="password-label"
             >
               <Input
                 data-testid="password"
