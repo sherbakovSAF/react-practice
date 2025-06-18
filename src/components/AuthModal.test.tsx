@@ -16,6 +16,10 @@ describe("AuthModal", () => {
 
     const emailInput = screen.getByTestId("email");
     const passwordInput = screen.getByTestId("password");
+    const submitButton = screen.getByRole("button", {
+      name: /войти/i,
+      hidden: true,
+    });
 
     fireEvent.change(emailInput, { target: { value: "test" } });
     fireEvent.change(passwordInput, { target: { value: "test" } });
@@ -24,6 +28,7 @@ describe("AuthModal", () => {
     expect(
       screen.getByText(/Введите более подходящий пароль/i)
     ).toBeInTheDocument();
-    screen.debug();
+
+    expect(submitButton).toBeDisabled();
   });
 });
