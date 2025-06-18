@@ -14,12 +14,17 @@ import {
   OffenderStatus,
   type OffenderStatus_E,
 } from "../types/OffenderStatusTypes";
+import { authModalSlice } from "../store/slices/authModalSlice";
+import { AuthSlice } from "../store/slices/authSlice";
 
 const Header = () => {
   // TODO: Вернуться к тому, чтобы при смене level, не перерендеривался TAB => Statuses
   const { lvl, status, search } = useAppSelector(
     (state) => state.offenderSlice
   );
+  const isAuthUser = useAppSelector((state) => state.authSlice.isAuthUser);
+  const { openAuthModal } = authModalSlice.actions;
+  const { setAuthUser } = AuthSlice.actions;
 
   const { setLvl, setSearch, setStatus, resetFilter } = OffenderSlice.actions;
   const dispatch = useAppDispatch();
@@ -66,7 +71,26 @@ const Header = () => {
     <header className={styles.header}>
       <div className={clsx(styles.header_logo, "container")}>
         <span className={styles.header_logo_title}>Wanted</span>
-        <Timer />
+        <div className={styles.header_logo_right}>
+          <Timer />
+          {isAuthUser ? (
+            <Button
+              tabIndex={0}
+              view="secondary"
+              onClick={() => dispatch(setAuthUser(false))}
+            >
+              Выйти
+            </Button>
+          ) : (
+            <Button
+              tabIndex={0}
+              view="secondary"
+              onClick={() => dispatch(openAuthModal())}
+            >
+              Войти
+            </Button>
+          )}
+        </div>
       </div>
       <div className={clsx(styles.header_control, "container")}>
         <search>

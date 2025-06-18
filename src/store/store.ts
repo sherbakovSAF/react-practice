@@ -1,19 +1,24 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import offenderSlice from "./slices/offenderSlice";
 import offenderModalSlice from "./slices/offenderModalSlice";
+import authModalSlice from "./slices/authModalSlice";
+import authSlice from "./slices/authSlice";
 import { offenderApi } from "../services/Offender.service";
 
 const rootReducer = combineReducers({
   offenderSlice,
   offenderModalSlice,
+  authModalSlice,
+  authSlice,
   [offenderApi.reducerPath]: offenderApi.reducer,
 });
 
-export const setupStore = () => {
+export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(offenderApi.middleware),
+    preloadedState,
   });
 };
 

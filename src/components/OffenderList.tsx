@@ -25,13 +25,17 @@ const OffenderList = () => {
   return (
     <div>
       {isLoading ? (
-        <Loader />
+        <Loader data-testid="loader-offender" />
       ) : offenders ? (
-        <ul className={styles["list"]}>
+        <ul data-testid="offender-list" className={styles["list"]}>
           {offenders.map((offender, idx) => {
             const isLast = idx === offenders.length - 1 && hasMore;
             return (
-              <li key={offender.id} ref={isLast ? lastOffenderEl : null}>
+              <li
+                key={offender.id}
+                ref={isLast ? lastOffenderEl : null}
+                data-testid="offender-card"
+              >
                 <OffenderCard
                   offender={offender}
                   onBusted={() => callApproveOffenderModal(offender)}

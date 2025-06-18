@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Button > renders default button snapshot 1`] = `
+<DocumentFragment>
+  <button
+    class="_btn_d3d534"
+    type="button"
+  >
+    Кнопка
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button > renders secondary button snapshot 1`] = `
+<DocumentFragment>
+  <button
+    class="_btn_d3d534 _btn--secondary_d3d534"
+    type="button"
+  >
+    Кнопка
+  </button>
+</DocumentFragment>
+`;
+
+exports[`Button > renders with custom class snapshot 1`] = `
+<DocumentFragment>
+  <button
+    class="custom-class _btn_d3d534"
+    type="button"
+  >
+    Кнопка
+  </button>
+</DocumentFragment>
+`;

@@ -29,7 +29,7 @@ export const useOffenders = () => {
     offenderApi.useLazyGetAllOffenderQuery();
   const [updateOffenderService] = offenderApi.useUpdateOffenderMutation();
   const TIME_DEBOUNCE_MS = 1000;
-  const debounce = useRef<number | null>(null);
+  const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchOffender = useCallback(async (): Promise<Offender_I[]> => {
     if (!hasMore) return [];
