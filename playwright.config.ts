@@ -31,7 +31,6 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    headless: false,
     launchOptions: {
       slowMo: 3000,
     },
@@ -79,7 +78,6 @@ export default defineConfig({
   webServer: {
     command: "npm run dev",
     url: "http://localhost:5173",
-    timeout: 30 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 });
